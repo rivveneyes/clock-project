@@ -1,57 +1,76 @@
-//=======global var======//
+
 const display= document.getElementById('time');
 const dateDisplay= document.getElementById('date');
-var toD='';
-const days = ["Monday","Tuseday","Wensday","Thursday","Friday","Saturday","Sunday"];
-const months =['January',"February","March",'April',"May","June","July","August","September","October","November","December"];
-//checks if number needs leeing zero
-function zeroplacer(par){
-  if(par<10){
-    return "0"+par;
+
+function displayTime(){
+  const theTime = new Date();
+  const hour = returnAmPm( theTime.getHours());
+  const minute= addLeadingZero(theTime.getMinutes());
+  const second = addLeadingZero(theTime.getSeconds());
+
+  display.textContent=`${hour}:${minute}:${second} ${amPm} `;  
+  
   }
-  else{
-    return par;
-  }
-}
-// sets global var ('toD' =to am/pm), along with change time to 1-12hr dispaly;
-function ampm(hour){
-if(hour<13){
-  toD="AM";
-  return hour
-}
-else{
-  toD='PM';
-  return hour=hour-12;  
-}
+
+function addLeadingZero(number){
+return number < 10 ? "0" + number :number;
 }
 
-// adds ending suffix to the date
-function placer(num){
-  if(num==1 || num ==21 || num ==31){
-    return num+"st";
-  }
-  else if(num==2 || num ==22){
-    return num+"nd";
-  }
-  else if(num==3 || num ==23){
-    return num+"rd";
-}
-  else{return num+'th'}
-}
-// creates date with all needed time stamp plus displaying to document
-function catchtime(){
-var theDate = new Date();
-var hour = theDate.getHours();
-var newhour=zeroplacer(ampm(hour));
-var min= zeroplacer(theDate.getMinutes());
-var sec = zeroplacer(theDate.getSeconds());
-var day= days[theDate.getDay()-1];
-var month = months[theDate.getMonth()];
-var date= placer(theDate.getDate());  
-var year = theDate.getFullYear();
-display.innerHTML=`${newhour}:${min}:${sec} ${toD}`;  
-dateDisplay.innerHTML=`${day}, ${month} ${date} ${year}`;
-console.log('TICK')
+function returnAmPm(hour){
+const isAm = hour <12 || hour === 0;
+ amPm = isAm ? "AM" : "PM";
+ hour= hour>= 13 ? hour-12 : hour;
+ hour = hour ===0 ? hour +12 :hour;
+return hour;
 }
 
-setInterval(catchtime, 1000);
+
+function converToOrdinal(number){
+  if(number < 10 || number > 20){
+  switch (number%10){
+    case 1:
+      return number +"st";
+    case 2:
+      return number+ "nd";
+    case 3:
+      return number + "rd";
+  }
+}
+  return number + "th";
+}
+
+
+function displayDate(){
+const theDate = new Date();
+const day= days[theDate.getDay()];
+const month = months[theDate.getMonth()];
+const date= converToOrdinal(theDate.getDate());  
+const year = theDate.getFullYear();
+dateDisplay.textContent=`${day}, ${month} ${date} ${year}`;
+}
+
+const days = [
+  "Sunday",
+  "Monday",
+  "Tuseday",
+  "Wensday",
+  "Thursday",
+  "Friday",
+  "Saturday"];
+  const months =[
+    'January',
+  "February",
+  "March",
+  'April',
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December"];
+
+displayTime()
+displayDate()
+setInterval(displayTime, 1000);
