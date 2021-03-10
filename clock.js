@@ -1,13 +1,10 @@
 
-const display= document.getElementById('time');
-const dateDisplay= document.getElementById('date');
-
 function displayTime(){
   const theTime = new Date();
   const hour = returnAmPm( theTime.getHours());
   const minute= addLeadingZero(theTime.getMinutes());
   const second = addLeadingZero(theTime.getSeconds());
-
+  const display= document.getElementById('time');
   display.textContent=`${hour}:${minute}:${second} ${amPm} `;  
   
   }
@@ -46,6 +43,7 @@ const day= days[theDate.getDay()];
 const month = months[theDate.getMonth()];
 const date= converToOrdinal(theDate.getDate());  
 const year = theDate.getFullYear();
+const dateDisplay= document.getElementById('date');
 dateDisplay.textContent=`${day}, ${month} ${date} ${year}`;
 }
 
